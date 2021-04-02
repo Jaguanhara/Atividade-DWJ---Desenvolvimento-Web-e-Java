@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Sistema de Gestão de Pedidos</title>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
+</head>
+<body>
+	<div class="container my-2">
+			<h1>Sistema de Gestão de Pedidos</h1>
+			<hr>
+			<h2>Realizar Pedido</h2>
+			<form action="#" th:action="@{/controle/pedidos/salvar}" th:object="${pedido}" method="POST">
+			<input type="hidden" id="id" th:field="*{id}">
+			<select th:field="*{produto}" class="form-control mb-4 col-4">
+      			<option th:each="produto: ${produto}" th:value="${produto.id}" th:text="${produto.nomeprod}" ></option> 
+      		</select>
+      		
+      		<select th:field="*{pessoa}" class="form-control mb-4 col-4">
+      			<option th:each="pessoa: ${pessoa}" th:value="${pessoa.id}" th:text="${pessoa.nome}" ></option> 
+      		</select>
+      		<button type="submit" class="btn btn-info col-2">Salvar</button>
+      		
+      		
+      		</form>
+      		<a th:href="@{/controle/pedidos}">Retornar para a lista de pedidos</a>
+		</div>
+	</body>
+</html>
