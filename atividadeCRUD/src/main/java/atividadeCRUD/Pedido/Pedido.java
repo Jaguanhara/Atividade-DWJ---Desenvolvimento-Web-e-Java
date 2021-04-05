@@ -1,18 +1,25 @@
 package atividadeCRUD.Pedido;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import atividadeCRUD.Produto.Produto;
+import atividadeCRUD.pedidoitem.PedidoItem;
 import atividadeCRUD.pessoa.Pessoa;
+
+
 
 @Entity
 public class Pedido {
@@ -27,10 +34,14 @@ public class Pedido {
 	@ManyToOne
 	private Pessoa pessoa;
 	
-	@ManyToOne
-	private Produto produto;
+	@OneToMany
+	(
+			cascade = CascadeType.ALL, 
+			orphanRemoval = true,
+			mappedBy = "pedido"
+	)
+	private List<PedidoItem> pedidoItem = new ArrayList<>();
 	
-
 	@Deprecated
 	public Pedido() {}
 	
@@ -54,20 +65,34 @@ public class Pedido {
 		this.datapedido = datapedido;
 	}
 	
-	public Produto getProduto() {
-		return produto;
-	}
-
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
-
 	public Pessoa getPessoa() {
 		return pessoa;
 	}
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+	}
+	
+	public void addPedidoItem(PedidoItem  pedidoItem) {
+		this.pedidoItem.add(pedidoItem);
+		pedidoItem.setPedido(this);
+	}
+	
+	public void removePedidoItem(PedidoItem pedidoItem) {
+		this.pedidoItem.remove(pedidoItem);
+		pedidoItem.setPedido(null);
+	}
+	
+	public void removePedidoItem(int index) {
+		PedidoItem pedidoItem = this.pedidoItem.get(index);
+		if (pedidoItem != null) {
+			this.pedidoItem.remove(index);
+			pedidoItem.setPedido(null);
+		}
+	}
+	
+	public List<PedidoItem> getPedidoItem() {
+		return this.pedidoItem;
 	}
 
 	@Override
@@ -85,6 +110,24 @@ public class Pedido {
 			return false;
 		Pedido other = (Pedido) obj;
 		return id == other.id;
+	}
+	
+	public void corrigirPedidoItem() {
+		limparPedidoItemVazios();
+		
+		for (PedidoItem pedidoItem : this.pedidoItem) {
+			pedidoItem.setPedido(this);
+		}
+		
+	}
+	
+	private void limparPedidoItemVazios() {
+		List<PedidoItem> pedidoItemVazios = pedidoItem.stream().filter(e -> e.isVazio()).collect(Collectors.toList());
+	
+		for (PedidoItem pedidoItem : pedidoItemVazios) {
+			removePedidoItem(pedidoItem);
+		}
+
 	}
 
 	
