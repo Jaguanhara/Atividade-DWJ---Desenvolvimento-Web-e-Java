@@ -1,14 +1,19 @@
 package atividadeCRUD.pessoa;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import atividadeCRUD.Produto.Produto;
+import atividadeCRUD.Pedido.Pedido;
+
 
 
 
@@ -26,6 +31,13 @@ public class Pessoa {
 	private String email;
 	private String telefone;
 	
+	@OneToMany
+	(
+			cascade = CascadeType.ALL, 
+			orphanRemoval = true,
+			mappedBy = "pessoa"
+	)
+	private List<Pedido> pedido = new ArrayList<>();
 	
 	@Deprecated
 	protected Pessoa() {}
@@ -54,19 +66,42 @@ public class Pessoa {
 	public String getEmail() {
 		return email;
 	}
-
+	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public String getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	
+	public void addPedido(Pedido pedido) {
+		this.pedido.add(pedido);
+		pedido.setPessoa(this);
 	}
-
+	
+	public void removePedido(Pedido pedido) {
+		this.pedido.remove(pedido);
+		pedido.setPessoa(null);
+	}
+	
+	public void removePedido(int index) {
+		Pedido pedido = this.pedido.get(index);
+		if (pedido != null) {
+			this.pedido.remove(index);
+			pedido.setPessoa(null);
+		}
+	}
+	
+	public List<Pedido> getPedido() {
+		return this.pedido;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
