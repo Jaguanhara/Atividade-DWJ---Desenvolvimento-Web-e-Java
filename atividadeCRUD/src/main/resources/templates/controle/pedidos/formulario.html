@@ -11,23 +11,63 @@
 </head>
 <body>
 	<div class="container my-2">
-			<h1>Sistema de Gestão de Pedidos</h1>
-			<hr>
-			<h2>Realizar Pedido</h2>
-			<form action="#" th:action="@{/controle/pedidos/salvar}" th:object="${pedido}" method="POST">
+		<h1>Sistema de Gestão de Pedidos</h1>
+		<hr>
+		<h2>Realizar Pedido</h2>
+		<form action="#" th:action="@{/controle/pedidos/salvar}"
+			th:object="${pedido}" method="POST">
 			<input type="hidden" id="id" th:field="*{id}">
-			<select th:field="*{produto}" class="form-control mb-4 col-4">
-      			<option th:each="produto: ${produto}" th:value="${produto.id}" th:text="${produto.nomeprod}" ></option> 
-      		</select>
-      		
-      		<select th:field="*{pessoa}" class="form-control mb-4 col-4">
-      			<option th:each="pessoa: ${pessoa}" th:value="${pessoa.id}" th:text="${pessoa.nome}" ></option> 
-      		</select>
-      		<button type="submit" class="btn btn-info col-2">Salvar</button>
-      		
-      		
-      		</form>
-      		<a th:href="@{/controle/pedidos}">Retornar para a lista de pedidos</a>
-		</div>
-	</body>
+			
+			<hr>
+			
+
+
+			<div class="table-responsive">
+				<h3>Produtos</h3>
+				<span if="${#fields.hasErrors('pedidoItem')}" errors="*{pedidoItem}"
+					class="text-danger"></span>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Quantidade</th>
+							<th scope="col">Produtos</th>
+							<th scope="col"><button type="submit" name="addItem">
+									<a class="btn btn-success"> Adicionar</a> <i
+										class="fas fa-plus-circle"></i>
+								</button></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item, itemStat : *{pedidoItem}">
+							<th scope="row" th:text="${itemStat.count}"><input
+								type="hidden" th:field="*{pedidoItem[__${itemStat.index}__].id}"></th>
+							<td><input type="text"
+								th:field="*{pedidoItem[__${itemStat.index}__].quantidade}" /></td>
+							<td>
+							<select
+								th:field="*{pedidoItem[__${itemStat.index}__].produto}">
+									<option
+										th:each="prodOpc : ${listaProdutos}"
+										th:value="${prodOpc.id}" th:text="${prodOpc.nomeprod}">
+									</option>
+							</select>
+							<td>
+								<button type="submit" name="removeItem"
+									th:value="${itemStat.index}">
+									<a class="btn btn-danger">Excluir</a> <i
+										class="fas fa-minus-square"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<a th:href="@{/controle/pessoas}">Retornar para a lista de
+					pessoas</a>
+			</div>
+			<button type="submit" class="btn btn-info col-2">Salvar</button>
+		</form>
+	
+
+</body>
 </html>
