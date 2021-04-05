@@ -2,6 +2,7 @@ package atividadeCRUD.Controle;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import atividadeCRUD.Pedido.Pedido;
 import atividadeCRUD.Pedido.PedidoRepositorio;
-import atividadeCRUD.Produto.ProdutoRepositorio;
-import atividadeCRUD.pessoa.Pessoa;
+import atividadeCRUD.Produtos.ProdutoRepositorio;
+import atividadeCRUD.pedidoitem.PedidoItem;
 import atividadeCRUD.pessoa.PessoaRepositorio;
 
 @Controller
@@ -40,8 +42,8 @@ public class PedidoControle {
 	@GetMapping("/controle/pedidos/novospedidos")
 	public String novoPedido(Model model) {
 		model.addAttribute("pedido", new Pedido());
-		model.addAttribute("pessoa", pessoaRepo.findAll());
-		model.addAttribute("produto", produtoRepo.findAll());
+		model.addAttribute("listaPessoas", pessoaRepo.findAll());
+		model.addAttribute("listaProdutos", produtoRepo.findAll());
 		return "/controle/pedidos/formulario";
 	}
 	
@@ -50,6 +52,7 @@ public class PedidoControle {
 		if(bindingResult.hasErrors()) {
 			return "controle/pedidos/formulario";
 		}
+		pedido.corrigirPedidoItem();
 		
 		pedidoRepo.save(pedido);
 		return "redirect:/controle/pessoas";
@@ -61,10 +64,30 @@ public class PedidoControle {
 		if(pedidoOpt.isEmpty()) {
 			throw new IllegalArgumentException("Pedido inválida");
 		}
-		model.addAttribute(pedidoOpt.get());
-		model.addAttribute("pessoa", pessoaRepo.findAll());
-		model.addAttribute("produto", produtoRepo.findAll());		
+		model.addAttribute(pedidoOpt.get());	
 		pedidoRepo.delete(pedidoOpt.get());
 		return "redirect:/controle/pedidos";
 	}
+	
+	@RequestMapping(value="/controle/pedidos/salvar", params = {"addItem"})
+	public String addItem(Pedido pedido, BindingResult bindingResult, Model model) {
+		pedido.getPedidoItem().add(new PedidoItem());
+		
+		model.addAttribute("listaPessoas", pessoaRepo.findAll());
+		model.addAttribute("listaProdutos", produtoRepo.findAll());
+		
+		return "controle/pedidos/formulario";
+	}
+	
+	@RequestMapping(value="/controle/pedidos/salvar", params = {"removeItem"})
+	public String removeItem(Pedido pedido, BindingResult bindingResult, HttpServletRequest req, Model model) {
+		final Integer itemIndex = Integer.valueOf(req.getParameter("removeItem"));
+		pedido.getPedidoItem().remove(itemIndex.intValue());
+		
+		model.addAttribute("listaPessoas", pessoaRepo.findAll());
+		model.addAttribute("listaProdutos", produtoRepo.findAll());
+		
+		return "controle/pedidos/formulario";
+	}
+
 }
