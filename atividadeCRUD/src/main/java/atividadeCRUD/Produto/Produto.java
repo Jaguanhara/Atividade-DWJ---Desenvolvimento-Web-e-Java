@@ -1,4 +1,4 @@
-package atividadeCRUD.Produtos;
+package atividadeCRUD.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
