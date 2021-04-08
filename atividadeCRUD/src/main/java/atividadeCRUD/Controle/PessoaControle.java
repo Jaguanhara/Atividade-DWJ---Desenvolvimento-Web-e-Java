@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import atividadeCRUD.Pedido.Pedido;
-import atividadeCRUD.Produtos.ProdutoRepositorio;
+import atividadeCRUD.Produto.ProdutoRepositorio;
 import atividadeCRUD.pessoa.Pessoa;
 import atividadeCRUD.pessoa.PessoaRepositorio;
 
