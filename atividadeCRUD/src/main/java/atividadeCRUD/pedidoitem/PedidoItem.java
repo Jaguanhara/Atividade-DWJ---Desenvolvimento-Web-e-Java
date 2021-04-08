@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import org.springframework.util.StringUtils;
 
 import atividadeCRUD.Pedido.Pedido;
-import atividadeCRUD.Produtos.Produto;
+import atividadeCRUD.Produto.Produto;
 
 
 @Entity
