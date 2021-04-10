@@ -28,6 +28,9 @@ public class PedidoItem {
 	@ManyToOne
 	private Produto produto;
 	
+	@ManyToOne
+	private Pessoa pessoa;
+	
 
 	@Deprecated
 	public PedidoItem() {}
