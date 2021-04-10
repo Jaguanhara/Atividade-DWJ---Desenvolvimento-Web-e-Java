@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 
 import atividadeCRUD.Pedido.Pedido;
 import atividadeCRUD.Produto.Produto;
-
+import atividadeCRUD.pessoa.Pessoa;
 
 @Entity
 public class PedidoItem {
