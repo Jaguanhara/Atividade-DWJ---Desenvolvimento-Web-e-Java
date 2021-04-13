@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 
 import atividadeCRUD.pedidoitem.PedidoItem;
 import atividadeCRUD.pessoa.Pessoa;
@@ -33,6 +34,7 @@ public class Pedido {
 	
 	@ManyToOne
 	private Pessoa pessoa;
+	
 	
 	@OneToMany
 	(
@@ -95,10 +97,15 @@ public class Pedido {
 		return this.pedidoItem;
 	}
 
+	public void setPedidoItem(List<PedidoItem> pedidoItem) {
+		this.pedidoItem = pedidoItem;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -122,13 +129,15 @@ public class Pedido {
 	}
 	
 	private void limparPedidoItemVazios() {
-		List<PedidoItem> pedidoItemVazios = pedidoItem.stream().filter(e -> e.isVazio()).collect(Collectors.toList());
+		List<PedidoItem> pedidoItemVazios = pedidoItem.stream().filter(pi -> pi.isVazio()).collect(Collectors.toList());
 	
 		for (PedidoItem pedidoItem : pedidoItemVazios) {
 			removePedidoItem(pedidoItem);
 		}
 
 	}
+	
+	
 
 	
 
