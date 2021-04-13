@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.util.StringUtils;
+
 import atividadeCRUD.Pedido.Pedido;
 
 
@@ -131,6 +133,8 @@ public class Pessoa {
 	public String toString() {
 		return "Pessoa [nome=" + nome + "]";
 	}
+	
+
 
 
 }
