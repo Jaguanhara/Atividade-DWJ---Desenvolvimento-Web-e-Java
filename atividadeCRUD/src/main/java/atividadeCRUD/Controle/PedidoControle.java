@@ -1,5 +1,6 @@
 package atividadeCRUD.Controle;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import atividadeCRUD.Pedido.Pedido;
 import atividadeCRUD.Pedido.PedidoRepositorio;
-import atividadeCRUD.Produto.ProdutoRepositorio;
+import atividadeCRUD.Produtos.ProdutoRepositorio;
 import atividadeCRUD.pedidoitem.PedidoItem;
 import atividadeCRUD.pessoa.PessoaRepositorio;
 
@@ -34,29 +35,33 @@ public class PedidoControle {
 		this.produtoRepo = produtoRepo;
 	}
 	
-	@GetMapping("/controle/pedido")
+	@GetMapping("/controle/pedidos")
 	public String pedidos(Model model) {
 		model.addAttribute("listaPedidos", pedidoRepo.findAll());
 		return "/controle/pedidos/index";
 	}
 	
+	
 	@GetMapping("/controle/pedidos/novospedidos")
 	public String novoPedido(Model model) {
 		model.addAttribute("pedido", new Pedido());
+		
 		model.addAttribute("listaPessoas", pessoaRepo.findAll());
 		model.addAttribute("listaProdutos", produtoRepo.findAll());
 		return "/controle/pedidos/formulario";
 	}
 	
 	@PostMapping("/controle/pedidos/salvar")
-	public String salvarPedido(@Valid @ModelAttribute("pedido")Pedido pedido, BindingResult bindingResult) {
+	public String salvarPedido(@Valid @ModelAttribute("pedido") Pedido pedido, BindingResult bindingResult, Model model) {
 		if(bindingResult.hasErrors()) {
 			return "controle/pedidos/formulario";
 		}
+		pedido.setDatapedido(LocalDate.now());
 		pedido.corrigirPedidoItem();
 		
 		pedidoRepo.save(pedido);
-		return "redirect:/controle/pessoas";
+		
+		return "redirect:/controle/pedidos";
 	}
 	
 	@GetMapping("/controle/pedidos/excluir/{id}")
@@ -74,6 +79,7 @@ public class PedidoControle {
 	public String addItem(Pedido pedido, BindingResult bindingResult, Model model) {
 		pedido.getPedidoItem().add(new PedidoItem());
 		
+		
 		model.addAttribute("listaPessoas", pessoaRepo.findAll());
 		model.addAttribute("listaProdutos", produtoRepo.findAll());
 		
@@ -85,10 +91,13 @@ public class PedidoControle {
 		final Integer itemIndex = Integer.valueOf(req.getParameter("removeItem"));
 		pedido.getPedidoItem().remove(itemIndex.intValue());
 		
+		
 		model.addAttribute("listaPessoas", pessoaRepo.findAll());
 		model.addAttribute("listaProdutos", produtoRepo.findAll());
 		
 		return "controle/pedidos/formulario";
+		
+
 	}
 
 }
