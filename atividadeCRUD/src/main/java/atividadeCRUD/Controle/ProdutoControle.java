@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import atividadeCRUD.Produto.Produto;
-import atividadeCRUD.Produto.ProdutoRepositorio;
-import atividadeCRUD.pessoa.Pessoa;
+import atividadeCRUD.Produtos.Produto;
+import atividadeCRUD.Produtos.ProdutoRepositorio;
+
 
 @Controller
 public class ProdutoControle {
@@ -51,6 +51,7 @@ public class ProdutoControle {
 		if (bindingResult.hasErrors()) {
 			return "controle/produtos/formulario";
 		}
+		
 
 		produtoRepo.save(produto);
 		return "redirect:/controle/produtos";
