@@ -1,4 +1,4 @@
-package atividadeCRUD.Produto;
+package atividadeCRUD.Produtos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.util.StringUtils;
+
 import com.sun.istack.NotNull;
 
 import atividadeCRUD.pedidoitem.PedidoItem;
-import atividadeCRUD.pessoa.Pessoa;
+
 
 @Entity
 public class Produto {
@@ -105,5 +107,7 @@ public class Produto {
 		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
 	}
+	
+	
 
 }
