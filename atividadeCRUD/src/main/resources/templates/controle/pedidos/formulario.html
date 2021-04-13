@@ -19,6 +19,11 @@
 			<input type="hidden" id="id" th:field="*{id}">
 			<hr>
 
+			<select th:field="*{pessoa}">
+				<option th:each="pessoaOpc : ${listaPessoas}"
+					th:value="${pessoaOpc.id}" th:text="${pessoaOpc.nome}">
+				</option>
+			</select>
 
 
 			<div class="table-responsive">
@@ -31,7 +36,7 @@
 							<th scope="col">Código</th>
 							<th scope="col">Quantidade</th>
 							<th scope="col">Produto</th>
-							<th scope="col">Pessoa</th>
+						
 							<th scope="col"><button type="submit" name="addItem">
 									<a class="btn btn-success"> Incluir Pedido</a> <i
 										class="fas fa-plus-circle"></i>
@@ -50,12 +55,7 @@
 										th:value="${prodOpc.id}" th:text="${prodOpc.nomeprod}">
 									</option>
 							</select></td>
-							<td><select
-								th:field="*{pedidoItem[__${itemStat.index}__].pessoa}">
-									<option th:each="pessoaOpc : ${listaPessoas}"
-										th:value="${pessoaOpc.id}" th:text="${pessoaOpc.nome}">
-									</option>
-							</select></td>
+							
 
 
 							<td>
@@ -71,10 +71,13 @@
 				</table>
 
 			</div>
-			</hr>
+			<hr>
+			
 
 			<button type="submit" class="btn btn-info col-2">Salvar</button>
 		</form>
+		<hr>
+		
 		<a th:href="@{/controle/pessoas}">Retornar para a lista de pessoas</a>
 
 
