@@ -8,11 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import atividadeCRUD.Pedido.Pedido;
-import atividadeCRUD.Produto.Produto;
-import atividadeCRUD.pessoa.Pessoa;
+import atividadeCRUD.Produtos.Produto;
+
+
 
 @Entity
 public class PedidoItem {
@@ -28,8 +30,6 @@ public class PedidoItem {
 	@ManyToOne
 	private Produto produto;
 	
-	@ManyToOne
-	private Pessoa pessoa;
 	
 
 	@Deprecated
@@ -66,10 +66,16 @@ public class PedidoItem {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "PedidoItem [quantidade=" + quantidade +"]";
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(id, quantidade);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -78,9 +84,9 @@ public class PedidoItem {
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
-			return false;
+			return false; 
 		PedidoItem other = (PedidoItem) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(id, other.id) && Objects.equals(quantidade, other.quantidade);
 	}
 	
 	public boolean isVazio() {
