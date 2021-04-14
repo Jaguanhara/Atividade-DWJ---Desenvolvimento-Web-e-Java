@@ -12,7 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import atividadeCRUD.Pedido.Pedido;
-import atividadeCRUD.Produtos.Produto;
+import atividadeCRUD.Produto.Produto;
 
 
 
