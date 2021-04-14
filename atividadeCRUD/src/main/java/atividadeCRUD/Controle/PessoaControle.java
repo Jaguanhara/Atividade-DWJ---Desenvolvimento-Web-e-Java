@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import atividadeCRUD.Pedido.Pedido;
-import atividadeCRUD.Produtos.ProdutoRepositorio;
+import atividadeCRUD.Produto.ProdutoRepositorio;
 import atividadeCRUD.pessoa.Pessoa;
 import atividadeCRUD.pessoa.PessoaRepositorio;
 
@@ -45,7 +45,7 @@ public class PessoaControle {
 	public String alterarPessoa(@PathVariable("id") long id, Model model) {
 		Optional<Pessoa> pessoaOpt = pessoaRepo.findById(id);
 		if (pessoaOpt.isEmpty()) {
-			throw new IllegalArgumentException("Pessoa inválida");
+			throw new IllegalArgumentException("Pessoa invÃ¡lida");
 		}
 		model.addAttribute("pessoa", pessoaOpt.get());
 		return "controle/pessoas/formulario";
@@ -68,7 +68,7 @@ public class PessoaControle {
 	public String excluirPessoa(@PathVariable("id") long id) {
 		Optional<Pessoa> pessoaOpt = pessoaRepo.findById(id);
 		if (pessoaOpt.isEmpty()) {
-			throw new IllegalArgumentException("Pessoa inválida");
+			throw new IllegalArgumentException("Pessoa invÃ¡lida");
 		}
 
 		pessoaRepo.delete(pessoaOpt.get());
