@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import atividadeCRUD.Produtos.Produto;
-import atividadeCRUD.Produtos.ProdutoRepositorio;
+import atividadeCRUD.Produto.Produto;
+import atividadeCRUD.Produto.ProdutoRepositorio;
+
+
 
 
 @Controller
@@ -40,7 +42,7 @@ public class ProdutoControle {
 	public String alterarProduto(@PathVariable("id") long id, Model model) {
 		Optional<Produto> produtoOpt = produtoRepo.findById(id);
 		if (produtoOpt.isEmpty()) {
-			throw new IllegalArgumentException("Produto inválido");
+			throw new IllegalArgumentException("Produto invÃ¡lido");
 		}
 		model.addAttribute("produto", produtoOpt.get());
 		return "controle/produtos/formulario";
@@ -61,7 +63,7 @@ public class ProdutoControle {
 	public String excluirProduto(@PathVariable("id") long id) {
 		Optional<Produto> produtoOpt = produtoRepo.findById(id);
 		if (produtoOpt.isEmpty()) {
-			throw new IllegalArgumentException("Produto inválido");
+			throw new IllegalArgumentException("Produto invÃ¡lido");
 		}
 
 		produtoRepo.delete(produtoOpt.get());
