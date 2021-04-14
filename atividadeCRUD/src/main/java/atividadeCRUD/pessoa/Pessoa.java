@@ -26,10 +26,10 @@ public class Pessoa {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@NotBlank(message = "Campo não pode ser vazio")
+	@NotBlank(message = "Campo nÃ£o pode ser vazio")
 	private String nome;
 	
-	@Email(message = "Campo deve conter um email váildo")
+	@Email(message = "Campo deve conter um email vÃ¡ildo")
 	private String email;
 	private String telefone;
 	
