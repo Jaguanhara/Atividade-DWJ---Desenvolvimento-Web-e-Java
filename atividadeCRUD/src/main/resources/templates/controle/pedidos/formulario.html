@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Sistema de GestÃ£o de Pedidos</title>
+<title>Sistema de Gestão de Pedidos</title>
 
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="container my-2">
-		<h1>Sistema de GestÃ£o de Pedidos</h1>
+		<h1>Sistema de Gestão de Pedidos</h1>
 		<hr>
 		<h2>Realizar Pedido</h2>
 		<form action="#" th:action="@{/controle/pedidos/salvar}"
@@ -21,9 +21,9 @@
 
 			<select th:field="*{pessoa}">
 				<option th:each="pessoaOpc : ${listaPessoas}"
-					th:value="${pessoaOpc.id}" th:text="${pessoaOpc.nome}">
-				</option>
+					th:value="${pessoaOpc.id}" th:text="${pessoaOpc.nome}"></option>
 			</select>
+			<hr>
 
 
 			<div class="table-responsive">
@@ -33,12 +33,12 @@
 				<table class="table table-hover">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">CÃ³digo</th>
+							<th scope="col">Código</th>
 							<th scope="col">Quantidade</th>
 							<th scope="col">Produto</th>
-						
+
 							<th scope="col"><button type="submit" name="addItem">
-									<a class="btn btn-success"> Incluir Pedido</a> <i
+									<a class="btn btn-success"> Incluir Produto</a> <i
 										class="fas fa-plus-circle"></i>
 								</button></th>
 						</tr>
@@ -55,7 +55,7 @@
 										th:value="${prodOpc.id}" th:text="${prodOpc.nomeprod}">
 									</option>
 							</select></td>
-							
+
 
 
 							<td>
@@ -72,12 +72,12 @@
 
 			</div>
 			<hr>
-			
+
 
 			<button type="submit" class="btn btn-info col-2">Salvar</button>
 		</form>
 		<hr>
-		
+
 		<a th:href="@{/controle/pessoas}">Retornar para a lista de pessoas</a>
 
 
