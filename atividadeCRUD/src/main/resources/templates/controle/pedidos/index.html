@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Sistema de Gestão de Pedidos</title>
+<title>Sistema de GestÃ£o de Pedidos</title>
 
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -12,28 +12,33 @@
 </head>
 <body>
 	<div class="container my-2">
-		<h1>Sistema de Gestão de Pedidos</h1>
+		<h1>Sistema de GestÃ£o de Pedidos</h1>
 		<hr>
-
+<a
+			th:href="@{/controle/pedidos/novospedidos}"
+			class="btn btn-primary btn-sm mb-3">Realizar Pedidos</a>
 		<h1>Pedidos</h1>
 		<table border="1" class="table table-striped table-responsive-md">
 			<thead>
 				<tr>
-					<th>ID</th>
-					<th>Produto</th>
+					<th>ID</th>				
 					<th>Pessoa</th>
-					<th>Quantidade</th>
+					<th>Valor Total</th>
+					<th>ConfiguraÃ§Ãµes</th>				
 				</tr>
 			</thead>
 			<tbody>
 
 				<tr th:each="pedido : ${listaPedidos}">
-					<td th:text="${pedido.id}"></td>
-					<!-- <td th:text="${pedido.pedidoItem.produto.nomeprod}"></td>
-					<td th:text="${pedido.pessoa.nome}"></td>
-					<td th:text="${pedido.pedidoItem.quantidade}"></td> -->
+					<td th:text="${pedido.id}"></td>			
+					<td th:text="${pedido.getNome()}"></td>
+					<td th:text="${pedido.getValorTotal()}"></td>	
+					<td><a th:href="@{/controle/pedidos/{id}(id=${pedido.id})}"
+						class="btn btn-primary">Alterar></a> <a
+						th:href="@{/controle/pedidos/excluir/{id}(id=${pedido.id})}"
+						class="btn btn-danger">Excluir></a>						
+						</td>				
 				</tr>
-
 			</tbody>
 		</table>
 	</div>
