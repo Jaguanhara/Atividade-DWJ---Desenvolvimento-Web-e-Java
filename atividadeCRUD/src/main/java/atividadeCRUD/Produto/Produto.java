@@ -1,4 +1,4 @@
-package atividadeCRUD.Produtos;
+package atividadeCRUD.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class Produto {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotBlank(message = "Campo não pode ser vazio")
+	@NotBlank(message = "Campo nÃ£o pode ser vazio")
 	private String nomeprod;
 
 	@NotNull()
