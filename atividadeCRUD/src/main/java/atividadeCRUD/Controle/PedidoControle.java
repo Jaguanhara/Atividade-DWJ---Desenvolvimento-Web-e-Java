@@ -18,8 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import atividadeCRUD.Pedido.Pedido;
 import atividadeCRUD.Pedido.PedidoRepositorio;
-import atividadeCRUD.Produtos.ProdutoRepositorio;
+import atividadeCRUD.Produto.ProdutoRepositorio;
 import atividadeCRUD.pedidoitem.PedidoItem;
+import atividadeCRUD.pessoa.Pessoa;
 import atividadeCRUD.pessoa.PessoaRepositorio;
 
 @Controller
@@ -68,11 +69,24 @@ public class PedidoControle {
 	public String excluirPedido(@PathVariable("id") long id,  Model model) {
 		Optional<Pedido> pedidoOpt = pedidoRepo.findById(id);
 		if(pedidoOpt.isEmpty()) {
-			throw new IllegalArgumentException("Pedido inválida");
+			throw new IllegalArgumentException("Pedido invÃ¡lida");
 		}
 		model.addAttribute(pedidoOpt.get());	
 		pedidoRepo.delete(pedidoOpt.get());
 		return "redirect:/controle/pedidos";
+	}
+	
+	@GetMapping("/controle/pedidos/{id}")
+	public String alterarPedido(@PathVariable("id") long id, Model model) {
+		Optional<Pedido> pedidoOpt = pedidoRepo.findById(id);
+		if (pedidoOpt.isEmpty()) {
+			throw new IllegalArgumentException("Pedido invÃ¡lido");
+		}
+		
+		model.addAttribute("pedido", pedidoOpt.get());
+		model.addAttribute("listaPessoas", pessoaRepo.findAll());
+		model.addAttribute("listaProdutos", produtoRepo.findAll());
+		return "controle/pedidos/formulario";
 	}
 	
 	@RequestMapping(value="/controle/pedidos/salvar", params = {"addItem"})
