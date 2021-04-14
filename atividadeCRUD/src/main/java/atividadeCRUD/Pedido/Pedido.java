@@ -1,11 +1,12 @@
 package atividadeCRUD.Pedido;
 
+import atividadeCRUD.pedidoitem.PedidoItem;
+import atividadeCRUD.pessoa.Pessoa;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,133 +14,132 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
-import atividadeCRUD.pedidoitem.PedidoItem;
-import atividadeCRUD.pessoa.Pessoa;
-
-
-
 @Entity
 public class Pedido {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
-	@DateTimeFormat(style = "yyyy-MM-dd")
-	private LocalDate datapedido;
-	
-	@ManyToOne
-	private Pessoa pessoa;
-	
-	
-	@OneToMany
-	(
-			cascade = CascadeType.ALL, 
-			orphanRemoval = true,
-			mappedBy = "pedido"
-	)
-	private List<PedidoItem> pedidoItem = new ArrayList<>();
-	
-	@Deprecated
-	public Pedido() {}
-	
-	public Pedido(LocalDate datapedido) {
-		this.datapedido = datapedido;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-	public long getId() {
-		return id;
-	}
+  @DateTimeFormat(style = "yyyy-MM-dd")
+  private LocalDate datapedido;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @ManyToOne
+  private Pessoa pessoa;
 
-	public LocalDate getDatapedido() {
-		return datapedido;
-	}
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "pedido")
+  private List<PedidoItem> pedidoItem = new ArrayList<>();
 
-	public void setDatapedido(LocalDate datapedido) {
-		this.datapedido = datapedido;
-	}
-	
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
+  @Deprecated
+  public Pedido() {}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
-	
-	public void addPedidoItem(PedidoItem  pedidoItem) {
-		this.pedidoItem.add(pedidoItem);
-		pedidoItem.setPedido(this);
-	}
-	
-	public void removePedidoItem(PedidoItem pedidoItem) {
-		this.pedidoItem.remove(pedidoItem);
-		pedidoItem.setPedido(null);
-	}
-	
-	public void removePedidoItem(int index) {
-		PedidoItem pedidoItem = this.pedidoItem.get(index);
-		if (pedidoItem != null) {
-			this.pedidoItem.remove(index);
-			pedidoItem.setPedido(null);
-		}
-	}
-	
-	public List<PedidoItem> getPedidoItem() {
-		return this.pedidoItem;
-	}
+  public Pedido(LocalDate datapedido) {
+    this.datapedido = datapedido;
+  }
 
-	public void setPedidoItem(List<PedidoItem> pedidoItem) {
-		this.pedidoItem = pedidoItem;
-	}
+  public long getId() {
+    return id;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-	
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pedido other = (Pedido) obj;
-		return id == other.id;
-	}
-	
-	public void corrigirPedidoItem() {
-		limparPedidoItemVazios();
-		
-		for (PedidoItem pedidoItem : this.pedidoItem) {
-			pedidoItem.setPedido(this);
-		}
-		
-	}
-	
-	private void limparPedidoItemVazios() {
-		List<PedidoItem> pedidoItemVazios = pedidoItem.stream().filter(pi -> pi.isVazio()).collect(Collectors.toList());
-	
-		for (PedidoItem pedidoItem : pedidoItemVazios) {
-			removePedidoItem(pedidoItem);
-		}
+  public LocalDate getDatapedido() {
+    return datapedido;
+  }
 
-	}
-	
-	
+  public void setDatapedido(LocalDate datapedido) {
+    this.datapedido = datapedido;
+  }
 
-	
+  public Pessoa getPessoa() {
+    return pessoa;
+  }
 
-	
+  public void setPessoa(Pessoa pessoa) {
+    this.pessoa = pessoa;
+  }
+
+  public void addPedidoItem(PedidoItem pedidoItem) {
+    this.pedidoItem.add(pedidoItem);
+    pedidoItem.setPedido(this);
+  }
+
+  public void removePedidoItem(PedidoItem pedidoItem) {
+    this.pedidoItem.remove(pedidoItem);
+    pedidoItem.setPedido(null);
+  }
+
+  public String getNome() {
+    if (pessoa != null) {
+      return pessoa.getNome();
+    } else {
+      return "";
+    }
+  }
+
+  public String getValorTotal() {
+    Float valorTotal = 0f;
+    if (pedidoItem != null) {
+      for (PedidoItem pedidoItemUnico : pedidoItem) {
+        valorTotal +=
+          Float.valueOf(pedidoItemUnico.getQuantidade()) *
+          pedidoItemUnico.getProduto().getValor();
+      }
+    }
+
+    return valorTotal.toString();
+  }
+
+  public void removePedidoItem(int index) {
+    PedidoItem pedidoItem = this.pedidoItem.get(index);
+    if (pedidoItem != null) {
+      this.pedidoItem.remove(index);
+      pedidoItem.setPedido(null);
+    }
+  }
+
+  public List<PedidoItem> getPedidoItem() {
+    return this.pedidoItem;
+  }
+
+  public void setPedidoItem(List<PedidoItem> pedidoItem) {
+    this.pedidoItem = pedidoItem;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
+    Pedido other = (Pedido) obj;
+    return id == other.id;
+  }
+
+  public void corrigirPedidoItem() {
+    limparPedidoItemVazios();
+
+    for (PedidoItem pedidoItem : this.pedidoItem) {
+      pedidoItem.setPedido(this);
+    }
+  }
+
+  private void limparPedidoItemVazios() {
+    List<PedidoItem> pedidoItemVazios = pedidoItem
+      .stream()
+      .filter(pi -> pi.isVazio())
+      .collect(Collectors.toList());
+
+    for (PedidoItem pedidoItem : pedidoItemVazios) {
+      removePedidoItem(pedidoItem);
+    }
+  }
 }
